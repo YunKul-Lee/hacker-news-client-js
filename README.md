@@ -5,4 +5,5 @@ Data 는 Hacker News 에서 제공하는 API 를 사용한다.
 ### Reference
 1. Site : https://hnpwa.com/
 2. API : https://github.com/tastejs/hacker-news-pwas/blob/master/docs/api.md
+3. CSS : https://tailwindcss.com/
 
