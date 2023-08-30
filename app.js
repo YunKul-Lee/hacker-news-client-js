@@ -12,7 +12,7 @@ function getData(url) {
 }
 
 function newsFeed() {
-    const newsFeed = getData(NEWS_URL);
+    const newsFeedData = getData(NEWS_URL);
     const newsList = [];
 
     newsList.push('<ul>');
@@ -20,8 +20,8 @@ function newsFeed() {
     for(let i = 0; i < 10; i++) {
         newsList.push(`
         <li>
-            <a href="#${newsFeed[i].id}">
-                ${newsFeed[i].title} (${newsFeed[i].comments_count})
+            <a href="#${newsFeedData[i].id}">
+                ${newsFeedData[i].title} (${newsFeedData[i].comments_count})
             </a>
         </li>
     `);
