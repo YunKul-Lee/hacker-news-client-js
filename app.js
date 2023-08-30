@@ -5,7 +5,8 @@ const CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
 
 const store = {
     currentPage: 1,
-    lastPage: 1
+    lastPage: 1,
+    feeds: []
 };
 
 function getData(url) {
@@ -15,8 +16,16 @@ function getData(url) {
     return JSON.parse(ajax.response);
 }
 
+function makeFeeds(feeds) {
+    for(let i = 0; i < feeds.length; i++) {
+        feeds[i].read = false;
+    }
+
+    return feeds;
+}
+
 function newsFeed() {
-    const newsFeedData = getData(NEWS_URL);
+    let newsFeedData = store.feeds; //getData(NEWS_URL);
     store.lastPage = newsFeedData.length / 10;
     const newsList = [];
     let template = `
@@ -40,9 +49,13 @@ function newsFeed() {
         </div>
     `;
 
+    if(newsFeedData.length === 0) {
+        newsFeedData = store.feeds = makeFeeds(getData(NEWS_URL));
+    }
+
     for(let i = (store.currentPage - 1) * 10; i < store.currentPage * 10; i++) {
         newsList.push(`
-        <div class="p-6 bg-white mt-6 rounded-lg shadow-md transition-colors duration-500 hover:bg-green-100">
+        <div class="p-6 ${newsFeedData[i].read ? 'bg-red-500' : 'bg-white'}  mt-6 rounded-lg shadow-md transition-colors duration-500 hover:bg-green-100">
             <div class="flex">
                 <div class="flex-auto">
                     <a href="#/show/${newsFeedData[i].id}">${newsFeedData[i].title}</a>
@@ -102,6 +115,13 @@ function newsDetail() {
             </div>
         </div>
     `;
+
+    for(let i = 0; i < store.feeds.length; i++) {
+        if(store.feeds[i].id === Number(id)) {
+            store.feeds[i].read = true;
+            break;
+        }
+    }
 
     function makeComment(comments, called = 0) {
         const commentString = [];
